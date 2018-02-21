@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+#insource build folder
+build
+
+#kdevelop project files
+*.kdev4
