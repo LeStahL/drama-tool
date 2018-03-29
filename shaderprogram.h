@@ -16,16 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
+#ifndef SHADERPROGRAM_H
+#define SHADERPROGRAM_H
 
-MainWindow::MainWindow(QWidget *parent)
-    : m_ui(new Ui::MainWindow)
-{
-    m_ui->setupUi(this);
-}
+#include "gldef.h"
 
-MainWindow::~MainWindow()
+typedef struct 
 {
-    delete m_ui;
-}
+    GLuint shader;
+    GLuint program;
+} shader_program;
+
+void create_shader(shader_program *p, GLchar **code);
+void add_variable(shader_program *p, const GLchar *name);
+void debug_shader(GLint shader_handle);
+
+#endif

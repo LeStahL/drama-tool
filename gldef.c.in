@@ -1,0 +1,45 @@
+/*
+ * DRaMa Tool - Demo RayMarching Tool
+ * Copyright (C) 2018  Alexander Kraus <nr4@z10.info>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "gldef.h"
+
+#include <pthread.h>
+#include <dlfcn.h>
+
+void glinitext()
+{
+    void *gl = (void*)dlopen("${GL_LIBRARY}", RTLD_LAZY | RTLD_GLOBAL);
+    
+    glGetShaderiv = (glGetShaderiv_t) dlsym(gl, "glGetShaderiv");
+    glGetShaderInfoLog = (glGetShaderInfoLog_t) dlsym(gl, "glGetShaderInfoLog");
+    glCreateShader = (glCreateShader_t) dlsym(gl, "glCreateShader");
+    glCreateProgram = (glCreateProgram_t) dlsym(gl, "glCreateProgram");
+    glShaderSource = (glShaderSource_t) dlsym(gl, "glShaderSource");
+    glCompileShader = (glCompileShader_t) dlsym(gl, "glCompileShader");
+    glAttachShader = (glAttachShader_t) dlsym(gl, "glAttachShader");
+    glLinkProgram = (glLinkProgram_t) dlsym(gl, "glLinkProgram");
+    glUseProgram = (glUseProgram_t) dlsym(gl, "glUseProgram");
+    glGetUniformLocation = (glGetUniformLocation_t) dlsym(gl, "glGetUniformLocation");
+    glUniform2f = (glUniform2f_t) dlsym(gl, "glUniform2f");
+    glUniform1f = (glUniform1f_t) dlsym(gl, "glUniform1f");
+    glGenFramebuffers = (glGenFramebuffers_t) dlsym(gl, "glGenFramebuffers");
+    glBindFramebuffer = (glBindFramebuffer_t) dlsym(gl, "glBindFramebuffer");
+    glFramebufferTexture2D = (glFramebufferTexture2D_t) dlsym(gl, "glFramebufferTexture2D");
+    glBlitFramebuffer = (glBlitFramebuffer_t) dlsym(gl, "glBlitFramebuffer");
+    glNamedRenderbufferStorage = (glNamedRenderbufferStorage_t) dlsym(gl, "glNamedRenderbufferStorage");
+}

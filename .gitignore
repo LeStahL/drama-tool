@@ -36,3 +36,4 @@ build
 
 #kdevelop project files
 *.kdev4
+*.kate-swp

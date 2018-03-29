@@ -1,3 +1,4 @@
+#
 # DRaMa Tool - Demo RayMarching Tool
 # Copyright (C) 2018  Alexander Kraus <nr4@z10.info>
 # 
@@ -13,25 +14,40 @@
 # 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
     
 cmake_minimum_required(VERSION 2.8.11)
 project(drama-tool)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
 
-find_package(Qt5Widgets REQUIRED)
+find_library(C_LIBRARY NAMES c)
+find_library(MATH_LIBRARY NAMES m)
+find_library(PTHREAD_LIBRARY NAMES pthread)
+find_library(DL_LIBRARY NAMES dl)
+find_library(X11_LIBRARY NAMES X11)
+find_library(GL_LIBRARY NAMES GL)
 
-set(DRAMA_TOOL_SRC
-    dt.cpp
-    MainWindow.cpp
+configure_file(gldef.c.in gldef.c NEWLINE_STYLE UNIX)
+
+find_program(SHADER_MINIFIER NAMES shader_minifier)
+add_custom_target(minification
+    ${SHADER_MINIFIER} "${CMAKE_SOURCE_DIR}/gfx/mainwin.frag" -o "${CMAKE_BINARY_DIR}/mainwin.h"
 )
 
-qt5_wrap_ui(DRAMA_TOOL_SRC MainWindow.ui)
-
-set(CMAKE_CXX_STANDARD 11)
+set(DRAMA_TOOL_SRC
+    drama.c
+    "${PROJECT_BINARY_DIR}/gldef.c"
+    xwindow.c
+    shaderprogram.c
+)
+add_definitions(-Wall)
 add_executable(drama-tool ${DRAMA_TOOL_SRC})
+add_dependencies(drama-tool minification)
 
-target_link_libraries(drama-tool Qt5::Widgets)
+target_link_libraries(drama-tool ${C_LIBRARY} ${MATH_LIBRARY} ${PTHREAD_LIBRARY} ${DL_LIBRARY} ${X11_LIBRARY} ${GL_LIBRARY})
+
+find_program(UPX_COMMAND NAMES upx)
+add_custom_command(TARGET drama-tool COMMAND ${UPX_COMMAND} --best "${PROJECT_BINARY_DIR}/drama-tool")
 
 install(TARGETS drama-tool DESTINATION bin)

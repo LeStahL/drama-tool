@@ -15,16 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#version 130
 
-#include "MainWindow.h"
+vec4 fcolor;
 
-#include <QApplication>
-
-int main(int argc, char *argv[])
+void addRect(float x1, float y1, float x2, float y2, vec4 color)
 {
-    QApplication app(argc, argv);
-    MainWindow w;
-    w.show();
+    float scale = step(x1, gl_FragCoord.x);
+    scale = (1.-step(x2, gl_FragCoord.x)) * scale;
+    scale = step(y1, gl_FragCoord.y) * scale;
+//     scale = (
+//     color = mix(fcolor, color, 
+}
 
-    return app.exec();
+void main()
+{
+    gl_FragColor = vec4(1.,0.,0.,1.);
+//     gl_FragColor = vec4(.5+.5*sin(length(gl_FragCoord)), .5+.5*sin(length(gl_FragCoord)), 0., 1.);
 }

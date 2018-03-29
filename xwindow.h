@@ -16,21 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMainWindow>
+#ifndef XWINDOW_H
+#define XWINDOW_H
 
-namespace Ui
-{
-    class MainWindow;
-}
+#include <stdlib.h>
+#include <pthread.h>
 
-class MainWindow : public QMainWindow
+#include <GL/gl.h>
+#include <GL/glx.h>
+
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
+typedef struct 
 {
-    Q_OBJECT
-    
-public:
-    MainWindow(QWidget *parent = 0);
-    virtual ~MainWindow();
-    
-private:
-    Ui::MainWindow *m_ui;
-};
+    Display                 *display;
+    Window                  root;
+    GLint                   *att; 
+    XVisualInfo             *vi;
+    Colormap                cmap;
+    XSetWindowAttributes    swa;
+    Window                  win;
+    GLXContext              glc;
+    XWindowAttributes       gwa;
+    XEvent                  xevent;
+} xwindow;
+
+void create_xwindow(xwindow *dst, int width, int height, int fullscreen);
+void keyboard_function(void *f);
+void render_function(void *f);
+
+#endif
